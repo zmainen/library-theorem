@@ -49,6 +49,7 @@ def load_all():
                     r = json.loads(line)
                     if r.get("total_tokens", 0) == 0:
                         continue
+                    # benchmark_v2 files use "m" for store size; exp2 files use "n"
                     m = r.get("m", r.get("n"))
                     key = (r["condition"], m, r["trial"])
                     seen[key] = r

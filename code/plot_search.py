@@ -121,7 +121,6 @@ def plot(save=True):
         out = FIGURES_DIR / "fig1_search-property.png"
         fig.savefig(out, dpi=150, bbox_inches="tight")
         print(f"Saved {out}")
-    plt.show()
 
 
 if __name__ == "__main__":
