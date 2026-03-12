@@ -1,6 +1,6 @@
 # The Library Theorem
 
-**A Formal Theory of Agentic Reasoning Capacity**
+**How External Organization Governs Agentic Reasoning Capacity**
 
 Zachary F. Mainen — Champalimaud Foundation, Lisbon
 
