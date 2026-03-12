@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Library Theorem</title>
+  <meta name="description" content="Why organizing AI memory matters more than making AI smarter. A formal theory of agentic reasoning capacity.">
+  <style>
+    :root {
+      --bg: #fafaf8;
+      --fg: #1a1a1a;
+      --accent: #2563eb;
+      --muted: #6b7280;
+      --border: #e5e5e5;
+      --code-bg: #f3f4f6;
+      --max-w: 720px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.7;
+      font-size: 18px;
+    }
+    .header {
+      border-bottom: 1px solid var(--border);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+    }
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .header .subtitle {
+      font-size: 1.1rem;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .header .meta {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .header .meta a { color: var(--accent); text-decoration: none; }
+    .header .meta a:hover { text-decoration: underline; }
+    .content {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h2 {
+      font-size: 1.5rem;
+      margin: 2.5rem 0 1rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 {
+      font-size: 1.2rem;
+      margin: 2rem 0 0.8rem;
+    }
+    p { margin-bottom: 1.2rem; }
+    strong { font-weight: 700; }
+    em { font-style: italic; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    th, td {
+      padding: 0.5rem 0.8rem;
+      text-align: right;
+      border-bottom: 1px solid var(--border);
+    }
+    th { font-weight: 600; border-bottom: 2px solid var(--fg); }
+    td:first-child, th:first-child { text-align: left; }
+    .figure {
+      margin: 2rem 0;
+      text-align: center;
+    }
+    .figure img {
+      max-width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .figure figcaption {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+    .callout {
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent);
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3rem 0;
+    }
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+    @media (max-width: 600px) {
+      body { font-size: 16px; }
+      .header h1 { font-size: 1.6rem; }
+      table { font-size: 0.8rem; }
+      th, td { padding: 0.3rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Library Theorem</h1>
+  <div class="subtitle">Why Organizing AI Memory Matters More Than Making AI Smarter</div>
+  <div class="meta">
+    Zachary F. Mainen &middot; Champalimaud Foundation, Lisbon<br>
+    <a href="#">Paper on arXiv</a> &middot; <a href="https://github.com/TODO">Code &amp; Data</a>
+  </div>
+</div>
+
+<div class="content">
+
+<h2>The oldest technology for making knowledge accessible</h2>
+
+<p>A library is not a pile of books. A pile of books is a warehouse. What makes a library a <em>library</em> is that you can find what you need&mdash;that the knowledge in it is accessible, not just present. The difference is organization: catalogs, classification systems, shelf orders. These are old technologies, older than printing, and they solve a problem so fundamental we rarely think about it: how do you retrieve one specific thing from among many?</p>
+
+<p>This problem applies to AI systems in exactly the same way it applies to physical libraries. And the mathematics turns out to be the same mathematics that governs how your computer finds a file on its hard drive.</p>
+
+<h2>Four libraries, same books</h2>
+
+<p>Imagine a library with a thousand books. You're looking for <em>Moby-Dick</em>. The books are distributed ten per shelf, so there are a hundred shelves. We compare four versions of this library&mdash;same books, same shelves, different organization.</p>
+
+<p><strong>Library 1: Random shelves.</strong> Books are placed in no particular order. You pull out a shelf, scan the ten spines, and if <em>Moby-Dick</em> isn't there, try another. On average you'll check about half the shelves&mdash;fifty visits&mdash;before finding it. Double the library size and you double the search. The work grows in direct proportion to the collection.</p>
+
+<p><strong>Library 2: Alphabetical shelves.</strong> The books have been sorted and the shelves are in order&mdash;A through Z, left to right. Now you can be strategic: go to the middle shelf, check whether M comes before or after what's there, and eliminate half the library in one step. Repeat on the remaining half. This is <em>binary search</em>. It takes about log&#8322; of the number of shelves&mdash;roughly 7 visits for a hundred shelves, 10 for a thousand, 20 for a million.</p>
+
+<p><strong>Library 3: Card catalog.</strong> At the entrance sits a single page: <em>"A&ndash;C: shelf 1, D&ndash;F: shelf 2, &hellip; M&ndash;O: shelf 7."</em> You read the catalog, go to shelf 7, find <em>Moby-Dick</em>. One visit. Always one, regardless of library size.</p>
+
+<p><strong>Library 4: Hierarchical catalog.</strong> The library has grown to millions of books. A single catalog page can't list every shelf. Instead: a master catalog points to a section ("Fiction, shelves 4001&ndash;6000"), a section catalog points to a subsection ("M authors, shelves 4801&ndash;4850"), and a subsection catalog points to the exact shelf. Three visits. For millions of books.</p>
+
+<p>This is how every database and file system works. When you open <code>/Users/zach/Documents/paper.pdf</code>, the operating system doesn't scan your entire disk. Each folder in that path is a catalog page&mdash;the directory tree <em>is</em> a hierarchical index, and the file system walks it in a few steps.</p>
+
+<h2>The experiment</h2>
+
+<p>We built these four libraries as digital stores and asked AI models to find specific entries. Each "visit" is a tool call&mdash;the model reads a page of ten entries, examines them, and decides what to do next. This fills the model's context window, which is the fundamental bottleneck: the model can only see one page at a time, just as you can only look at one shelf at a time.</p>
+
+<p>We tested two models. First, GPT-4o-mini&mdash;a capable but not frontier model:</p>
+
+<table>
+  <thead>
+    <tr><th>Library</th><th>100 items</th><th>500 items</th><th>2,000 items</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Random shelves</td><td>6 visits</td><td>22 visits</td><td>133 visits</td></tr>
+    <tr><td>Alphabetical shelves</td><td>5 visits</td><td>21 visits</td><td>&mdash;</td></tr>
+    <tr><td>Card catalog</td><td>1 visit</td><td>1 visit</td><td>1 visit</td></tr>
+    <tr><td>Hierarchical catalog</td><td>1 visit</td><td>1 visit</td><td>1 visit</td></tr>
+  </tbody>
+</table>
+
+<p>The alphabetical library barely helps. We told the model explicitly that the pages were sorted. It tries to jump to the right region, but it can't sustain binary search&mdash;it loses track of its bounds, overshoots, backtracks, and at 500 items it's almost as slow as random scanning: 21 visits versus 22.</p>
+
+<p>Then GPT-5.4&mdash;a much more powerful model:</p>
+
+<table>
+  <thead>
+    <tr><th>Library</th><th>100 items</th><th>500 items</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Alphabetical shelves</td><td>2 visits</td><td>5 visits</td></tr>
+    <tr><td>Card catalog</td><td>1 visit</td><td>1 visit</td></tr>
+    <tr><td>Hierarchical catalog</td><td>1 visit</td><td>1 visit</td></tr>
+  </tbody>
+</table>
+
+<p>GPT-5.4 <em>can</em> do binary search. Five visits at 500 items is almost exactly the theoretical optimum of log&#8322;(50) &asymp; 5.6. The stronger model is building an index <em>in its head</em>&mdash;maintaining mental bounds, reasoning about where a key should fall, narrowing by halves. It's performing what you might call <em>self-indexing in context</em>. This may be part of what makes stronger models stronger in general: they can impose internal organization on the information they encounter, doing mentally what a card catalog does physically.</p>
+
+<p>But the card catalog still wins. Five visits versus one. And the gap is exponential: at a million items, even perfect binary search needs about 17 visits. The catalog still needs 1.</p>
+
+<figure class="figure">
+  <img src="figures/fig6_multimodel.png" alt="Multi-model comparison figure showing page reads across conditions for GPT-4o-mini and GPT-5.4">
+  <figcaption>Figure 6: Multi-model comparison. GPT-4o-mini cannot sustain binary search on sorted pages (left). GPT-5.4 achieves near-optimal binary search but indexed retrieval still dominates (center). Both models achieve 100% accuracy with an index (right).</figcaption>
+</figure>
+
+<h2>The separation is exponential</h2>
+
+<p>The mathematical result&mdash;the Library Theorem&mdash;proves that this gap isn't a quirk of our experiment. It's structural.</p>
+
+<p>An AI agent scanning through unstructured memory needs O(N) operations to find something in a store of N items. An agent with an indexed store needs O(log N). That's the difference between a million and twenty. And the costs <em>compound</em>: over a long reasoning session where the agent repeatedly retrieves from its own growing notes, the unindexed agent pays O(T&sup2;) total cost while the indexed agent pays O(T log T). At scale, this is the difference between feasible and infeasible.</p>
+
+<h2>When the AI thinks it already knows</h2>
+
+<p>We discovered something unexpected when we changed the content.</p>
+
+<p>In the random-key experiments, the AI follows the retrieval protocol faithfully: read the index, go to the right page, read the answer, submit it. 100% accuracy. But when we filled the store with encyclopedia entries&mdash;real facts about real words&mdash;the model started cheating. Instead of looking up the answer, it <em>generated</em> it from memory. It had seen these facts during training, and the parametric knowledge competed with the retrieval protocol.</p>
+
+<p>The result was catastrophic. At 200 encyclopedia entries, the model spent its entire token budget generating plausible-sounding answers without ever reading a single page. Accuracy dropped to 27%. The index was perfectly constructed. The tools worked correctly. The model simply didn't <em>use</em> them.</p>
+
+<figure class="figure">
+  <img src="figures/fig5_content-comparison.png" alt="Content comparison showing retrieval failure on encyclopedia content">
+  <figcaption>Figure 5: Content familiarity disrupts retrieval. Hash and numeric content: protocol followed, retrieval works. Encyclopedia content: the model generates from memory instead of reading, accuracy collapses.</figcaption>
+</figure>
+
+<p>We call this <em>parametric memory competition</em>: two pathways&mdash;retrieval (follow the protocol) and parametric (generate from memory)&mdash;competing for control of the model's behavior. When the content is unfamiliar, only the retrieval pathway produces a plausible answer, and the model follows it. When the content is familiar, the parametric pathway fires first, and the model shortcuts the protocol.</p>
+
+<p>This leads to a design principle: use language models to <em>build</em> indices (they understand content, they can classify and organize), but use deterministic algorithms to <em>traverse</em> them (no hallucination, no shortcuts, guaranteed O(log N)).</p>
+
+<hr>
+
+<h2>Why this matters</h2>
+
+<h3>A missing axis in scaling</h3>
+
+<p>Current discussions of AI scaling focus on three variables: model size, training data, and compute. The Library Theorem identifies a fourth: the organization of the knowledge the model works with. Its effect is not marginal&mdash;it's exponential. Doubling the model's parameters gives incremental gains. Indexing its knowledge base gives orders-of-magnitude gains.</p>
+
+<p>This means there's an entire axis of improvement that doesn't require bigger models or more training. It requires better infrastructure&mdash;the kind of infrastructure that librarians, archivists, and database engineers have been building for centuries.</p>
+
+<h3>Opening the black box</h3>
+
+<p>When a model generates an answer from parametric memory, you can't see how it got there. The knowledge is inside the model, encoded in billions of parameters, and the retrieval process is opaque. This is the black box problem.</p>
+
+<p>When a model follows an external index, every step is visible. It read the catalog. It went to shelf 14. It found entry 7294. It submitted the value. The retrieval path is <em>fully auditable</em>. You can verify each step. You can inspect the index itself for completeness, bias, or staleness.</p>
+
+<p>The self-indexing result cuts both ways here. A stronger model that builds an index in its head is impressive&mdash;but it puts the search process <em>back inside the black box</em>. External indices keep it outside, where it can be inspected, governed, and corrected.</p>
+
+<div class="callout">
+The Library Theorem gives a <em>performance</em> reason to prefer external structure (exponential speedup) that happens to align with a <em>governance</em> reason (auditability). That's unusual&mdash;efficiency and transparency usually trade off. Here they point the same way.
+</div>
+
+<h3>Implications for AI alignment</h3>
+
+<p>If AI systems increasingly rely on external knowledge stores&mdash;files, databases, structured memory&mdash;then the governance question shifts from "what does the model know?" to "what can the model access, and how is it organized?"</p>
+
+<p>This is a more tractable question. You can audit a database. You can version-control an index. You can grant or revoke access to specific knowledge domains. You can trace exactly what information contributed to a decision. None of this is possible when the knowledge lives inside the model's parameters.</p>
+
+<hr>
+
+<h2>The deeper point</h2>
+
+<p>We tend to think of AI capability as something inside the model&mdash;its size, its training, its architecture. The Library Theorem says that's only half the story. The external structure the model works with is equally consequential, and the effect is provably exponential.</p>
+
+<p>A well-indexed knowledge base makes a weak model perform like a strong one. A disorganized one wastes even a strong model's capabilities on search. A library's card catalog is not a convenience&mdash;it's what makes the knowledge in the collection <em>available</em>. This has been true for centuries. The Library Theorem proves it holds for artificial minds too.</p>
+
+</div>
+
+<div class="footer">
+  <a href="#">Paper on arXiv</a> &middot; <a href="https://github.com/TODO">Code &amp; Data on GitHub</a><br>
+  Zachary F. Mainen &middot; Champalimaud Foundation &middot; 2026
+</div>
+
+</body>
+</html>
