@@ -4,7 +4,7 @@
 
 Zachary F. Mainen — Champalimaud Foundation, Lisbon
 
-[Paper on arXiv](#) · [Project page](https://zmainen.github.io/library-theorem/)
+Paper on arXiv (forthcoming) · [Project page](https://zmainen.github.io/library-theorem/)
 
 ---
 
@@ -14,6 +14,8 @@ This repository contains the experiment code, data, and project page for the Lib
 
 ## Key results
 
+The primary experiments use GPT-4o-mini as the retrieval agent:
+
 | Store organization | 100 items | 500 items | 2,000 items |
 |:-------------------|----------:|----------:|------------:|
 | Random pages       |  6 reads  | 22 reads  | 133 reads   |
@@ -21,7 +23,7 @@ This repository contains the experiment code, data, and project page for the Lib
 | Card catalog (index) | 1 read  |  1 read   |   1 read    |
 | Hierarchical index |  1 read   |  1 read   |   1 read    |
 
-Multi-model replication (GPT-5.4) shows that stronger models achieve near-optimal binary search on sorted pages (5 reads at 500 items) — but the explicit index still wins 5-to-1, and the gap grows exponentially.
+Multi-model replication with GPT-5.4 shows that stronger models achieve near-optimal binary search on sorted pages (5 reads at 500 items vs 21 for GPT-4o-mini) — but the explicit index still wins 5-to-1, and the gap grows exponentially with store size.
 
 ## Repository structure
 
@@ -39,7 +41,7 @@ code/
   plot_content.py    Fig 5: parametric memory competition
   plot_multimodel.py Fig 6: multi-model comparison
 data/
-  *.jsonl            Raw experiment results (1,294 trials)
+  *.jsonl            Raw experiment results (~1,994 trials)
 ```
 
 ## Running the experiment
@@ -50,8 +52,8 @@ Requires Python 3.11+ and an OpenAI API key.
 pip install openai matplotlib numpy
 export OPENAI_API_KEY=sk-...
 
-# Run retrieval experiment (50 trials per condition, 8 parallel workers)
-python code/experiment.py --n 50 100 200 500 --trials 50 --workers 8
+# Run retrieval experiment (50 trials per condition)
+python code/experiment.py --n 50 100 200 500 --trials 50
 
 # Generate figures
 python code/plot_search.py

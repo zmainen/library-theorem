@@ -5,9 +5,8 @@ Uses a frequency-ranked English noun list. For each topic, prompts an LLM
 to generate a single factual sentence. Saves as a static JSON corpus.
 
 Usage:
-    source ~/.secrets
-    python3.11 generate_corpus.py --m 5000
-    python3.11 generate_corpus.py --m 5000 --provider openrouter
+    export OPENAI_API_KEY=sk-...
+    python generate_corpus.py --m 5000
 """
 import argparse
 import json
