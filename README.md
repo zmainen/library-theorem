@@ -4,7 +4,7 @@
 
 Zachary F. Mainen — Champalimaud Foundation, Lisbon
 
-Paper on arXiv (forthcoming) · [Project page](https://zmainen.github.io/library-theorem/)
+[Paper on arXiv](https://arxiv.org/abs/2603.21272) · [Project page](https://zmainen.github.io/library-theorem/)
 
 ---
 
