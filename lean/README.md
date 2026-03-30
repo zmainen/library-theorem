@@ -12,6 +12,8 @@ Machine-checked proofs for the Library Theorem. All proofs are `sorry`-free.
 | `Haak/Library/Separation.lean` | Theorem 3: exponential separation | ✓ Complete |
 | `Haak/Library/Turing.lean` | Theorem 5: externalization → Turing completeness | ✓ Complete |
 | `Haak/Library/Reasoning.lean` | Theorem 4: reasoning separation | ✓ Complete |
+| `Haak/Library/WriteRead.lean` | Theorem 1 (Paper 08): Write-Read Separation — indexed beats sequential iff R = Ω(log_b N) | ✓ Complete |
+| `Haak/Library/Inscription.lean` | Theorem 2 (Paper 08): Inscription Theorem — write cost = read cost = O(log_b N) | ✓ Complete |
 
 ## Building
 
