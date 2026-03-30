@@ -55,8 +55,13 @@ code/
 data/
   *.jsonl              Raw results (~1,994 trials across both models)
 figures/               Web-optimized versions of all paper figures
+lean/                  Lean 4 machine-checked proofs (all theorems, sorry-free)
 index.html             Project page (served via GitHub Pages)
 ```
+
+## Lean 4 proofs
+
+The core theorems (capacity bound, sequential lower bound, indexed upper bound, exponential separation, reasoning separation, Turing completeness) are machine-checked in Lean 4. See [`lean/`](lean/) for the full formalization.
 
 ### Reproduce
 
